@@ -15,7 +15,6 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != 1) {
     <input type="submit" name="logout" value="LOGOUT">
 </form>
 
-
 <?php 
 if (isset($_SESSION['Create'])){
     echo $_SESSION['Create'];
@@ -35,9 +34,3 @@ if (isset($_SESSION['Create'])){
 </form>
 
 
-<!-- $file = 'test.txt' ;
-file_put_contents($file, '');
-$homepage = file_get_contents($file);
-echo $homepage;
-
-unlink($file); -->
