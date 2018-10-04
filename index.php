@@ -1,6 +1,7 @@
 
 <?php
 require_once 'startSettings.php';
+// Logout
 if (isset($_POST['logout']) && $_POST['logout'] == 'LOGOUT'){
     $_SESSION['login'] = 0;
 }
@@ -16,6 +17,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != 1) {
 </form>
 
 <?php 
+//  INFO Message
 if (isset($_SESSION['Create'])){
     echo $_SESSION['Create'];
     unset($_SESSION['Create']);
@@ -32,5 +34,33 @@ if (isset($_SESSION['Create'])){
     <input type="text" name="folderName" placeholder=" Folder name">
     <input type="submit" name="create" value="Create">
 </form>
+<!-- Text Area Forma -->
+<?php
+if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
+?>
+    <form action="file.php" method="post">
+        <textarea name="fileText" placeholder=" Text write to file"><?php 
+            if(isset($_GET['file'])) {
+                $_SESSION['file']=$_GET['file'];
+                }
+            echo file_get_contents('work/'.$_SESSION['file'])
+        ?></textarea>
+        <input type="submit" name="create" value="Create">
+    </form>
+<?php
+}else if (isset($_GET['file']) && substr($_GET['file'], -4) == '.jpg' ){
+    echo '<img src='.$settings['path'].'/'.$settings['dir'].'/'. 'style="height: 150px;width: 150px;"/>'
+}
+?>
+
+<?php
+if ($handle = opendir('work')) {
+   while (false !== ($entry = readdir($handle))) {
+       if($entry !="." && $entry !=".."){
+           echo '<a href="?file='.$entry . '">'.$entry.'<br>';
+       }
+   }
+   closedir($handle);
+}
 
 
