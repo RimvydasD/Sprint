@@ -38,21 +38,34 @@ if (isset($_SESSION['Create'])){
 <?php
 if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 ?>
-    <form action="file.php" method="post">
+    <form action="file.php" method="post" style="float:right">
         <textarea name="fileText" placeholder=" Text write to file"><?php 
             if(isset($_GET['file'])) {
                 $_SESSION['file']=$_GET['file'];
                 }
             echo file_get_contents('work/'.$_SESSION['file'])
         ?></textarea>
+        <input type="submit" name="delete" value="Delete">
         <input type="submit" name="create" value="Create">
     </form>
 <?php
+// Jpg Show Area
 }else if (isset($_GET['file']) && substr($_GET['file'], -4) == '.jpg' ){
-    echo '<img src='.$settings['path'].'/'.$settings['dir'].'/'. 'style="height: 150px;width: 150px;"/>'
+    if(isset($_GET['file'])) {
+        $_SESSION['file']=$_GET['file'];
+        }
+?>        
+    <form action="file.php" method="post" style="float:right">
+<?php       
+        echo '<img src="'.$settings['dir'].'/'.$_SESSION['file'] . '" style="height: 150px;width: 150px;"/>';
+?>
+        <input type="submit" name="delete" value="Delete">
+    </form>  
+<?php  
 }
 ?>
 
+<!-- Whats in Folder show -->
 <?php
 if ($handle = opendir('work')) {
    while (false !== ($entry = readdir($handle))) {
@@ -62,5 +75,12 @@ if ($handle = opendir('work')) {
    }
    closedir($handle);
 }
+?>
+<br>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" name="submit" value="Upload Image">
+</form>
 
 
