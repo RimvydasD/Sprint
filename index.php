@@ -1,4 +1,3 @@
-
 <?php
 require_once 'startSettings.php';
 // Logout
@@ -39,11 +38,12 @@ if (isset($_SESSION['Create'])){
 if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 ?>
     <form action="file.php" method="post" style="float:right">
+        <p> File: <?php echo $_GET['file']; ?> </p>
         <textarea name="fileText" placeholder=" Text write to file"><?php 
             if(isset($_GET['file'])) {
                 $_SESSION['file']=$_GET['file'];
                 }
-            echo file_get_contents('work/'.$_SESSION['file'])
+            echo file_get_contents($settings['dir'].'/'.$_SESSION['file'])
         ?></textarea>
         <input type="submit" name="delete" value="Delete">
         <input type="submit" name="create" value="Create">
@@ -56,6 +56,7 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
         }
 ?>        
     <form action="file.php" method="post" style="float:right">
+        <p> File: <?php echo $_GET['file']; ?> </p>
 <?php       
         echo '<img src="'.$settings['dir'].'/'.$_SESSION['file'] . '" style="height: 150px;width: 150px;"/>';
 ?>
@@ -64,23 +65,24 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 <?php  
 }
 ?>
-
 <!-- Whats in Folder show -->
 <?php
 if ($handle = opendir('work')) {
    while (false !== ($entry = readdir($handle))) {
        if($entry !="." && $entry !=".."){
-           echo '<a href="?file='.$entry . '">'.$entry.'<br>';
+           echo '<a href="?file='.$entry . '">'.$entry.'</a><br>';
        }
    }
    closedir($handle);
 }
 ?>
+<!-- File upload -->
 <br>
-<form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" name="submit" value="Upload Image">
-</form>
-
+<div>
+    <form action="file.php" method="post" enctype="multipart/form-data">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileSelect">
+        <input type="submit" name="submit" value="Upload Image">
+    </form>
+</div>
 
