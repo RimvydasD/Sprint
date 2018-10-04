@@ -77,12 +77,9 @@ if ($handle = opendir('work')) {
 }
 ?>
 <!-- File upload -->
-<br>
-<div>
-    <form action="file.php" method="post" enctype="multipart/form-data">
-        Select image to upload:
-        <input type="file" name="fileToUpload" id="fileSelect">
-        <input type="submit" name="submit" value="Upload Image">
-    </form>
-</div>
+<form action="file.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileSelect">
+    <input type="submit" name="submit" value="Upload Image">
+</form>
 
