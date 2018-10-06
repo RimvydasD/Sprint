@@ -25,6 +25,7 @@ if(isset($_POST['session'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Manager</title>
+    <link href="index.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- Logout Form -->
