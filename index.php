@@ -1,9 +1,5 @@
 <?php
 require_once 'startSettings.php';
-// Create Folder for files/folders
-if(!file_exists($settings['dir'])){
-    mkdir($settings['dir']);
-}
 // Logout
 if (isset($_POST['logout']) && $_POST['logout'] == 'LOGOUT'){
     $_SESSION['login'] = 0;
@@ -12,6 +8,10 @@ if (isset($_POST['logout']) && $_POST['logout'] == 'LOGOUT'){
 if (!isset($_SESSION['login']) || $_SESSION['login'] != 1) {
     header('Location: '.$settings['uri'].'login.php');
     die();
+}
+// Create Folder for files/folders
+if(!file_exists($settings['dir'])){
+    mkdir($settings['dir']);
 }
 // Session unset
 if(isset($_POST['session'])){
@@ -36,15 +36,13 @@ if(isset($_POST['session'])){
 <form action="" method="post" style="float:right">
     <input type="submit" name="session" value="Unset Session">
 </form>
-
 <?php 
 //  INFO Message
-if (isset($_SESSION['Create'])){
-    echo $_SESSION['Create'];
-    unset($_SESSION['Create']);
+if (isset($_SESSION['Info'])){
+    echo $_SESSION['Info'];
+    unset($_SESSION['Info']);
 }
 ?>
-
 <!-- File Create Form -->
 <form action="file.php" method="post">
     <input type="text" name="fileName" placeholder=" File name">
@@ -55,7 +53,7 @@ if (isset($_SESSION['Create'])){
     <input type="text" name="folderName" placeholder=" Folder name">
     <input type="submit" name="create" value="Create">
 </form>
-<!-- Text Area Form -->
+<!-- Text Form Area  -->
 <?php
 if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 ?>
@@ -68,7 +66,7 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
             echo file_get_contents($settings['dir'].$_SESSION['dir'].'/'.$_SESSION['file'])
         ?></textarea>
         <input type="submit" name="delete" value="Delete">
-        <input type="submit" name="create" value="Create">
+        <input type="submit" name="save" value="Save">
     </form>
 <?php
 // Jpg Show Area
@@ -80,7 +78,7 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
     <form action="file.php" method="post" style="float:right">
         <p> File: <?php echo $_GET['file']; ?> </p>
 <?php       
-        echo '<img src="'.$settings['dir'].'/'.$_SESSION['file'] . '" style="height: 150px;width: 150px;"/>';
+        echo '<img src="'.$settings['dir'].$_SESSION['dir'].'/'.$_SESSION['file'] . '" style="height: 150px;width: 150px;"/>';
 ?>
         <input type="submit" name="delete" value="Delete">
     </form>  
@@ -116,7 +114,7 @@ if ($handle = opendir($settings['dir'].$_SESSION['dir'])) {
 <!-- File upload -->
 <form action="file.php" method="post" enctype="multipart/form-data">
     Select image to upload:
-    <input type="file" name="fileToUpload" id="fileSelect">
+    <input type="file" name="fileToUpload">
     <input type="submit" name="submit" value="Upload Image">
 </form>
 
