@@ -1,5 +1,9 @@
 <?php
 require_once 'startSettings.php';
+// Create Folder for files/folders
+if(!file_exists($settings['dir'])){
+    mkdir($settings['dir']);
+}
 // Logout
 if (isset($_POST['logout']) && $_POST['logout'] == 'LOGOUT'){
     $_SESSION['login'] = 0;
@@ -9,10 +13,27 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != 1) {
     header('Location: '.$settings['uri'].'login.php');
     die();
 }
+// Session unset
+if(isset($_POST['session'])){
+    session_unset();
+    header('Location: '.$settings['uri']);
+}
 ?>
-<!-- Logout Forma -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+</head>
+<body>
+<!-- Logout Form -->
 <form action="" method="post" style="float:right">
     <input type="submit" name="logout" value="LOGOUT">
+</form>
+<!-- Session unset -->
+<form action="" method="post" style="float:right">
+    <input type="submit" name="session" value="Unset Session">
 </form>
 
 <?php 
@@ -23,17 +44,17 @@ if (isset($_SESSION['Create'])){
 }
 ?>
 
-<!-- File Create Forma -->
+<!-- File Create Form -->
 <form action="file.php" method="post">
     <input type="text" name="fileName" placeholder=" File name">
     <input type="submit" name="create" value="Create">
 </form>
-<!-- Folder Create Forma -->
+<!-- Folder Create Form -->
 <form action="file.php" method="post">
     <input type="text" name="folderName" placeholder=" Folder name">
     <input type="submit" name="create" value="Create">
 </form>
-<!-- Text Area Forma -->
+<!-- Text Area Form -->
 <?php
 if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 ?>
@@ -43,7 +64,7 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
             if(isset($_GET['file'])) {
                 $_SESSION['file']=$_GET['file'];
                 }
-            echo file_get_contents($settings['dir'].'/'.$_SESSION['file'])
+            echo file_get_contents($settings['dir'].$_SESSION['dir'].'/'.$_SESSION['file'])
         ?></textarea>
         <input type="submit" name="delete" value="Delete">
         <input type="submit" name="create" value="Create">
@@ -52,7 +73,7 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
 // Jpg Show Area
 }else if (isset($_GET['file']) && substr($_GET['file'], -4) == '.jpg' ){
     if(isset($_GET['file'])) {
-        $_SESSION['file']=$_GET['file'];
+        $_SESSION['file'] = $_GET['file'];
         }
 ?>        
     <form action="file.php" method="post" style="float:right">
@@ -64,13 +85,28 @@ if(isset($_GET['file']) && substr($_GET['file'], -4) == '.txt' ){
     </form>  
 <?php  
 }
+// Whats in Folder show
+if(!isset($_SESSION['dir'])){
+    $_SESSION['dir'] = "";
+}
+if(isset($_GET['folder'])){
+    $_SESSION['dir'] = $_SESSION['dir'].'/'.$_GET['folder'];
+}
+if($_SESSION['dir'] != ""){
 ?>
-<!-- Whats in Folder show -->
+    <form action="file.php" method="post">
+        <input type="submit" name="Back" value="Back">
+    </form> 
 <?php
-if ($handle = opendir('work')) {
+}
+if ($handle = opendir($settings['dir'].$_SESSION['dir'])) {
    while (false !== ($entry = readdir($handle))) {
        if($entry !="." && $entry !=".."){
-           echo '<a href="?file='.$entry . '">'.$entry.'</a><br>';
+           if(!is_dir($settings['dir'].$_SESSION['dir'].'/'.$entry)){
+               echo '<a href="?file='.$entry . '">'.$entry.'</a><br>';
+            }else{
+                echo '<a href="?folder='.$entry .'">'.$entry.'</a><br>';
+           }
        }
    }
    closedir($handle);
@@ -83,3 +119,6 @@ if ($handle = opendir('work')) {
     <input type="submit" name="submit" value="Upload Image">
 </form>
 
+
+</body>
+</html>
