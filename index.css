@@ -1,1 +1,67 @@
-/* Some day */
+*{
+    margin: 0px;
+    padding: 0px;
+    line-height: 18px;
+    box-sizing: border-box;
+}
+body{
+    padding: 8px;
+}
+.UI{
+    display: block;
+    float: right;
+    height: 60px;
+    width: 10%;
+}
+.fileManager{
+    display: inline-block;
+    height: 60px;
+    width: 90%;
+}
+    .fileManager > .fileCreate{
+        display: inline-block;
+        height: 60px;
+        width: 24%;
+    }
+    .fileManager > .folderCreate{
+        display: inline-block;
+        height: 60px;
+        width: 24%;
+    }
+    .fileManager > .fileUpload{
+        display: inline-block;
+        height: 60px;
+        width: 50%;
+    }
+.info{
+    width: 100%;
+    height: 40px;
+    text-align: center;
+}
+.folderUI{
+    display: block;
+    width: 25%;
+    float: left;
+}
+.fileShow{
+    display: inline-block;
+    width: 74%;
+    text-align: center;
+}
+    .fileShow > form > img {
+        display: inline-block;
+        height: auto;
+        width: 250px;
+    }
+    .fileShow > form > .show {
+        display: inline-block;
+    }
+        .fileShow > form > .show > textarea {
+            padding: 4px;
+            height: 250px;
+            width: 350px;
+        }
+    .fileShow > form > .buttons {
+        display: inline-block;
+        width: 50px;
+    }
